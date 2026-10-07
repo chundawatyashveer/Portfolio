@@ -17,9 +17,7 @@ export default function Navbar() {
     <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-black/80 border-b border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-8 h-16 flex items-center justify-between font-mono">
         <a href="#hero" className="flex items-center gap-2.5 group">
-          <span className="h-9 w-9 rounded-xl bg-white text-black font-extrabold flex items-center justify-center text-sm tracking-wider shadow-lg">
-            YSC
-          </span>
+          <img src="/ysc-logo.png" alt="YSC Logo" className="h-9 w-9 rounded-xl shadow-lg border border-white/20 object-cover group-hover:scale-105 transition-transform" />
           <span className="font-bold text-sm tracking-widest text-white uppercase hidden sm:inline font-sans">
             Yashveer<span className="text-white/40 font-mono">.dev</span>
           </span>

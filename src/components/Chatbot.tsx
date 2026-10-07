@@ -9,10 +9,16 @@ export default function Chatbot() {
   ]);
   const [input, setInput] = useState('');
   const [typing, setTyping] = useState(false);
-  const endRef = useRef<HTMLDivElement>(null);
+
+  const chatContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTo({
+        top: chatContainerRef.current.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
   }, [messages, typing]);
 
   const ask = (q: string) => {
@@ -102,8 +108,8 @@ export default function Chatbot() {
               <MessageSquare className="w-4 h-4 text-white/40" />
             </div>
 
-            {/* Message Area */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-3">
+            {/* Message Area - Container Scoped Scroll */}
+            <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4 space-y-3">
               {messages.map((m, i) => (
                 <div key={i} className={`flex ${m.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
                   <div className={`flex items-start gap-2 max-w-[85%] ${m.sender === 'user' ? 'flex-row-reverse' : ''}`}>
@@ -130,7 +136,6 @@ export default function Chatbot() {
                   </div>
                 </div>
               )}
-              <div ref={endRef} />
             </div>
 
             {/* Input Bar */}

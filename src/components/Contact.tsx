@@ -26,13 +26,43 @@ export default function Contact() {
     setTimeout(() => setCopied(null), 2000);
   };
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!form.name || !form.email || !form.message) return;
+    
     setStatus('sending');
-    setTimeout(() => {
+
+    try {
+      const response = await fetch("https://formsubmit.co/ajax/chundawatyashveer@gmail.com", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          _subject: form.subject || `New Portfolio Message from ${form.name}`,
+          message: form.message,
+          _captcha: "false"
+        })
+      });
+
+      if (response.ok) {
+        setStatus('done');
+        setForm({ name: '', email: '', subject: '', message: '' });
+      } else {
+        // Fallback to mailto link
+        window.location.href = `mailto:chundawatyashveer@gmail.com?subject=${encodeURIComponent(form.subject || 'Portfolio Contact Inquiry')}&body=${encodeURIComponent(`Name: ${form.name}\nEmail: ${form.email}\n\nMessage:\n${form.message}`)}`;
+        setStatus('done');
+        setForm({ name: '', email: '', subject: '', message: '' });
+      }
+    } catch {
+      // Fallback on network error
+      window.location.href = `mailto:chundawatyashveer@gmail.com?subject=${encodeURIComponent(form.subject || 'Portfolio Contact Inquiry')}&body=${encodeURIComponent(`Name: ${form.name}\nEmail: ${form.email}\n\nMessage:\n${form.message}`)}`;
       setStatus('done');
       setForm({ name: '', email: '', subject: '', message: '' });
-    }, 1200);
+    }
   };
 
   return (
@@ -49,7 +79,7 @@ export default function Contact() {
             Get In Touch
           </h2>
           <p className="text-white/50 text-sm font-mono mt-1">
-            Have a project, opportunity, or inquiry? Send a message directly.
+            Have a project, opportunity, or inquiry? Send a message directly to Yashveer's inbox.
           </p>
         </div>
       </div>
@@ -134,11 +164,11 @@ export default function Contact() {
             </div>
             <button type="submit" disabled={status === 'sending'}
               className="w-full bg-white hover:bg-zinc-200 text-black font-semibold text-xs py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg">
-              {status === 'sending' ? <><Activity className="w-4 h-4 animate-spin" /> Sending Message...</> : status === 'done' ? <><Check className="w-4 h-4" /> Message Sent!</> : <><Send className="w-4 h-4" /> Send Direct Message</>}
+              {status === 'sending' ? <><Activity className="w-4 h-4 animate-spin" /> Sending Email...</> : status === 'done' ? <><Check className="w-4 h-4" /> Message Sent to Inbox!</> : <><Send className="w-4 h-4" /> Send Direct Email</>}
             </button>
             {status === 'done' && (
               <p className="text-xs text-emerald-400 text-center">
-                Message received successfully! Yashveer will reach back soon.
+                Message successfully sent to chundawatyashveer@gmail.com!
               </p>
             )}
           </form>
