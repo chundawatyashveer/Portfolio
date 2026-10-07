@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Copy, Check, Send, Activity } from 'lucide-react';
+import { Mail, Phone, MapPin, Copy, Check, Send, Activity, MessageSquare } from 'lucide-react';
 import { resumeData } from '../data';
 
 const GithubIcon = ({ className = "w-5 h-5" }: { className?: string }) => (
@@ -30,102 +29,121 @@ export default function Contact() {
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('sending');
-    setTimeout(() => { setStatus('done'); setForm({ name: '', email: '', subject: '', message: '' }); }, 1200);
+    setTimeout(() => {
+      setStatus('done');
+      setForm({ name: '', email: '', subject: '', message: '' });
+    }, 1200);
   };
 
   return (
-    <section id="contact" className="py-24 px-5 sm:px-8 max-w-7xl mx-auto">
-      <div className="hr-gradient mb-20" />
-      <div className="text-center mb-16">
-        <p className="text-[10px] tracking-[0.3em] uppercase text-red-500 font-semibold mb-2">Get In Touch</p>
-        <h2 className="text-3xl sm:text-4xl font-heading font-bold text-white">Let's Build Together</h2>
-        <div className="h-0.5 w-10 bg-red-600 rounded mt-2 mx-auto" />
+    <section id="contact" className="py-24 px-4 sm:px-8 max-w-7xl mx-auto text-left">
+      
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4 border-b border-white/10 pb-6">
+        <div>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 text-xs font-mono tracking-widest uppercase text-white/70 mb-3">
+            <MessageSquare className="w-3.5 h-3.5 text-white/80" />
+            <span>Connect & Hire</span>
+          </div>
+          <h2 className="text-3xl sm:text-5xl font-bold text-white tracking-tight font-sans">
+            Get In Touch
+          </h2>
+          <p className="text-white/50 text-sm font-mono mt-1">
+            Have a project, opportunity, or inquiry? Send a message directly.
+          </p>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-stretch">
-        {/* Left info */}
-        <div className="lg:col-span-5 rounded-2xl p-6 sm:p-8 bg-white/[0.015] border border-white/[0.04] flex flex-col justify-between space-y-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+        
+        {/* Contact Info */}
+        <div className="lg:col-span-5 rounded-2xl p-6 sm:p-8 bg-zinc-950 border border-white/15 flex flex-col justify-between space-y-6 shadow-2xl">
           <div className="space-y-4">
-            <h3 className="font-heading font-bold text-white text-lg">Contact Details</h3>
+            <h3 className="font-bold text-white text-lg font-sans">Direct Contact Details</h3>
+            
             {[
               { icon: Mail, label: 'Email', value: resumeData.email, href: `mailto:${resumeData.email}`, id: 'email' },
               { icon: Phone, label: 'Phone', value: resumeData.phone, href: `tel:${resumeData.phone}`, id: 'phone' },
             ].map(item => (
-              <div key={item.id} className="flex items-center gap-3.5 p-3 rounded-xl bg-white/[0.02] border border-white/[0.04] hover:border-red-500/15 transition-all group">
-                <div className="w-9 h-9 rounded-lg bg-red-500/10 text-red-500 flex items-center justify-center group-hover:scale-105 transition-transform">
-                  <item.icon className="w-4.5 h-4.5" />
+              <div key={item.id} className="flex items-center gap-3.5 p-3.5 rounded-xl bg-white/[0.03] border border-white/10 hover:border-white/30 transition-all font-mono">
+                <div className="w-10 h-10 rounded-lg bg-white/10 text-white flex items-center justify-center">
+                  <item.icon className="w-4 h-4" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-[9px] text-white/20 uppercase tracking-wider">{item.label}</p>
-                  <a href={item.href} className="text-[13px] font-medium text-white/50 hover:text-red-500 transition-colors truncate block">{item.value}</a>
+                  <p className="text-[10px] text-white/40 uppercase tracking-widest">{item.label}</p>
+                  <a href={item.href} className="text-xs font-semibold text-white hover:underline truncate block">
+                    {item.value}
+                  </a>
                 </div>
-                <button onClick={() => copy(item.value, item.id)} className="text-white/15 hover:text-red-500 transition-colors p-1 cursor-pointer" aria-label={`Copy ${item.label}`}>
-                  {copied === item.id ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                <button onClick={() => copy(item.value, item.id)} className="text-white/40 hover:text-white transition-colors p-1" title="Copy">
+                  {copied === item.id ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
                 </button>
               </div>
             ))}
-            <div className="flex items-center gap-3.5 p-3 rounded-xl bg-white/[0.02] border border-white/[0.04]">
-              <div className="w-9 h-9 rounded-lg bg-red-500/10 text-red-500 flex items-center justify-center">
-                <MapPin className="w-4.5 h-4.5" />
+
+            <div className="flex items-center gap-3.5 p-3.5 rounded-xl bg-white/[0.03] border border-white/10 font-mono">
+              <div className="w-10 h-10 rounded-lg bg-white/10 text-white flex items-center justify-center">
+                <MapPin className="w-4 h-4" />
               </div>
               <div>
-                <p className="text-[9px] text-white/20 uppercase tracking-wider">Location</p>
-                <p className="text-[13px] font-medium text-white/50">{resumeData.location}</p>
+                <p className="text-[10px] text-white/40 uppercase tracking-widest">Location</p>
+                <p className="text-xs font-semibold text-white">{resumeData.location}</p>
               </div>
             </div>
           </div>
 
-          <div className="pt-5 border-t border-white/[0.04] space-y-3">
-            <p className="text-[10px] tracking-[0.2em] uppercase text-white/20">Follow</p>
+          <div className="pt-6 border-t border-white/10 space-y-3 font-mono">
+            <p className="text-[10px] tracking-widest uppercase text-white/40">Social Profiles</p>
             <div className="flex gap-3">
               <a href={resumeData.github} target="_blank" rel="noopener noreferrer"
-                className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl bg-white/[0.02] border border-white/[0.04] text-[12px] font-medium text-white/30 hover:text-white hover:border-white/10 transition-all">
+                className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-white/5 border border-white/10 text-xs font-medium text-white hover:bg-white/10 transition-all">
                 <GithubIcon className="w-4 h-4" /> GitHub
               </a>
               <a href={resumeData.linkedin} target="_blank" rel="noopener noreferrer"
-                className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl bg-white/[0.02] border border-white/[0.04] text-[12px] font-medium text-white/30 hover:text-white hover:border-white/10 transition-all">
+                className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-white/5 border border-white/10 text-xs font-medium text-white hover:bg-white/10 transition-all">
                 <LinkedinIcon className="w-4 h-4" /> LinkedIn
               </a>
             </div>
           </div>
         </div>
 
-        {/* Right form */}
-        <div className="lg:col-span-7 rounded-2xl p-6 sm:p-8 bg-white/[0.015] border border-white/[0.04]">
+        {/* Contact Form */}
+        <div className="lg:col-span-7 rounded-2xl p-6 sm:p-8 bg-zinc-950 border border-white/15 shadow-2xl font-mono">
           <form onSubmit={submit} className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <label htmlFor="c-name" className="text-[10px] tracking-[0.2em] uppercase text-white/20">Name</label>
-                <input id="c-name" type="text" required value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} placeholder="John Doe"
-                  className="w-full bg-white/[0.02] border border-white/[0.04] rounded-xl px-4 py-2.5 text-[13px] text-white/70 placeholder-white/10 focus:outline-none focus:border-red-500/30" />
+                <label className="text-[10px] tracking-widest uppercase text-white/50">Your Name</label>
+                <input type="text" required value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} placeholder="John Doe"
+                  className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder-white/20 focus:outline-none focus:border-white" />
               </div>
               <div className="space-y-1.5">
-                <label htmlFor="c-email" className="text-[10px] tracking-[0.2em] uppercase text-white/20">Email</label>
-                <input id="c-email" type="email" required value={form.email} onChange={e => setForm(p => ({ ...p, email: e.target.value }))} placeholder="john@example.com"
-                  className="w-full bg-white/[0.02] border border-white/[0.04] rounded-xl px-4 py-2.5 text-[13px] text-white/70 placeholder-white/10 focus:outline-none focus:border-red-500/30" />
+                <label className="text-[10px] tracking-widest uppercase text-white/50">Your Email</label>
+                <input type="email" required value={form.email} onChange={e => setForm(p => ({ ...p, email: e.target.value }))} placeholder="john@example.com"
+                  className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder-white/20 focus:outline-none focus:border-white" />
               </div>
             </div>
             <div className="space-y-1.5">
-              <label htmlFor="c-sub" className="text-[10px] tracking-[0.2em] uppercase text-white/20">Subject</label>
-              <input id="c-sub" type="text" value={form.subject} onChange={e => setForm(p => ({ ...p, subject: e.target.value }))} placeholder="Internship / Work"
-                className="w-full bg-white/[0.02] border border-white/[0.04] rounded-xl px-4 py-2.5 text-[13px] text-white/70 placeholder-white/10 focus:outline-none focus:border-red-500/30" />
+              <label className="text-[10px] tracking-widest uppercase text-white/50">Subject</label>
+              <input type="text" value={form.subject} onChange={e => setForm(p => ({ ...p, subject: e.target.value }))} placeholder="Job Opportunity / Project Collaboration"
+                className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder-white/20 focus:outline-none focus:border-white" />
             </div>
             <div className="space-y-1.5">
-              <label htmlFor="c-msg" className="text-[10px] tracking-[0.2em] uppercase text-white/20">Message</label>
-              <textarea id="c-msg" required rows={4} value={form.message} onChange={e => setForm(p => ({ ...p, message: e.target.value }))} placeholder="Hi Yashveer, I saw your portfolio..."
-                className="w-full bg-white/[0.02] border border-white/[0.04] rounded-xl px-4 py-2.5 text-[13px] text-white/70 placeholder-white/10 focus:outline-none focus:border-red-500/30 resize-none" />
+              <label className="text-[10px] tracking-widest uppercase text-white/50">Message</label>
+              <textarea required rows={4} value={form.message} onChange={e => setForm(p => ({ ...p, message: e.target.value }))} placeholder="Hi Yashveer, I saw your reel-styled portfolio..."
+                className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder-white/20 focus:outline-none focus:border-white resize-none" />
             </div>
             <button type="submit" disabled={status === 'sending'}
-              className="w-full bg-red-600 hover:bg-red-500 disabled:opacity-50 text-white font-semibold py-3 rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-red-500/10">
-              {status === 'sending' ? <><Activity className="w-4 h-4 animate-spin" /> Sending...</> : status === 'done' ? <><Check className="w-4 h-4" /> Sent!</> : <><Send className="w-4 h-4" /> Send Message</>}
+              className="w-full bg-white hover:bg-zinc-200 text-black font-semibold text-xs py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg">
+              {status === 'sending' ? <><Activity className="w-4 h-4 animate-spin" /> Sending Message...</> : status === 'done' ? <><Check className="w-4 h-4" /> Message Sent!</> : <><Send className="w-4 h-4" /> Send Direct Message</>}
             </button>
             {status === 'done' && (
-              <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-[11px] text-emerald-400 text-center">
-                Message sent successfully (simulated).
-              </motion.p>
+              <p className="text-xs text-emerald-400 text-center">
+                Message received successfully! Yashveer will reach back soon.
+              </p>
             )}
           </form>
         </div>
+
       </div>
     </section>
   );
